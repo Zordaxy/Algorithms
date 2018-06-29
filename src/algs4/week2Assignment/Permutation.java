@@ -1,3 +1,5 @@
+package algs4.week2Assignment;
+
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 

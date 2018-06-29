@@ -1,3 +1,5 @@
+package algs4.week2Assignment;
+
 import java.util.Iterator;
 
 public class Deque<Item> implements Iterable<Item> {
