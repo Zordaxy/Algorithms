@@ -1,14 +1,24 @@
 import edu.princeton.cs.algs4.Stack;
 
-public class Board implements Comparable<Board> {
-    private int[][] blocks;
-    private int dimension;
+import java.util.Arrays;
+
+public class Board {
+    private final int[][] blocks;
+    private final int dimension;
+    private final int manhattanPriority;
 
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks) {
-        this.blocks = blocks;
-        this.dimension = blocks.length > blocks[0].length ? blocks.length : blocks[0].length;
+        this.dimension = blocks.length;
+
+        this.blocks = new int[this.dimension][this.dimension];
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                this.blocks[i][j] = blocks[i][j];
+            }
+        }
+        manhattanPriority = computeManhattan();
     }
 
     // board dimension n
@@ -18,26 +28,30 @@ public class Board implements Comparable<Board> {
 
     // number of blocks out of place
     public int hamming() {
-        int summ = 0;
+        int sum = 0;
         for (int i = 0; i < this.blocks.length; i++) {
             for (int j = 0; j < blocks[i].length; j++) {
                 int el = this.blocks[i][j];
                 if (el != 0) {
                     el--;
                     int verticalDiff = Math.abs((el / this.dimension) - i);
-                    int horizontallDiff = Math.abs((el % this.dimension) - j);
-                    if (verticalDiff > 0 || horizontallDiff > 0) {
-                        summ++;
+                    int horizontalDiff = Math.abs((el % this.dimension) - j);
+                    if (verticalDiff > 0 || horizontalDiff > 0) {
+                        sum++;
                     }
                 }
             }
         }
 
-        return summ;
+        return sum;
     }
 
     // sum of Manhattan distances between blocks and goal
     public int manhattan() {
+        return manhattanPriority;
+    }
+
+    private int computeManhattan() {
         int sum = 0;
         for (int i = 0; i < this.blocks.length; i++) {
             for (int j = 0; j < blocks[i].length; j++) {
@@ -95,17 +109,7 @@ public class Board implements Comparable<Board> {
         if (other.getClass() != this.getClass()) return false;
 
         Board that = (Board) other;
-        return this.toString().equals(that.toString());
-    }
-
-    public int compareTo(Board that) {
-        if (this.manhattan() < that.manhattan()) {
-            return -1;
-        } else if (this.manhattan() > that.manhattan()) {
-            return +1;
-        } else {
-            return 0;
-        }
+        return Arrays.deepEquals(this.blocks, that.blocks);
     }
 
     // all neighboring boards
@@ -145,6 +149,33 @@ public class Board implements Comparable<Board> {
             swap(neighborsArray, emptyBlock[0], emptyBlock[1] + 1, emptyBlock[0], emptyBlock[1]);
             neighbors.push(new Board(neighborsArray));
         }
+
+
+//        if (emptyBlock[0] > 0) {
+//            if (emptyBlock[1] > 0) {
+//                neighborsArray = clonedArray();
+//                swap(neighborsArray, emptyBlock[0] - 1, emptyBlock[1] - 1, emptyBlock[0], emptyBlock[1]);
+//                neighbors.push(new Board(neighborsArray));
+//            }
+//            if (emptyBlock[1] < dimension - 1) {
+//                neighborsArray = clonedArray();
+//                swap(neighborsArray, emptyBlock[0] - 1, emptyBlock[1] + 1, emptyBlock[0], emptyBlock[1]);
+//                neighbors.push(new Board(neighborsArray));
+//            }
+//        }
+//        if (emptyBlock[0] < dimension - 1) {
+//            if (emptyBlock[1] > 0) {
+//                neighborsArray = clonedArray();
+//                swap(neighborsArray, emptyBlock[0] + 1, emptyBlock[1] - 1, emptyBlock[0], emptyBlock[1]);
+//                neighbors.push(new Board(neighborsArray));
+//            }
+//            if (emptyBlock[1] < dimension - 1) {
+//                neighborsArray = clonedArray();
+//                swap(neighborsArray, emptyBlock[0] + 1, emptyBlock[1] + 1, emptyBlock[0], emptyBlock[1]);
+//                neighbors.push(new Board(neighborsArray));
+//            }
+//        }
+
         return neighbors;
     }
 
@@ -163,6 +194,6 @@ public class Board implements Comparable<Board> {
 
     // unit tests (not graded)
     public static void main(String[] args) {
-
+        // empty
     }
 }
