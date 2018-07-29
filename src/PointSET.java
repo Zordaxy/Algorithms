@@ -1,7 +1,12 @@
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.SET;
+import edu.princeton.cs.algs4.StdDraw;
 
 public class PointSET {
-    private SET<Point2D> set;
+    private final SET<Point2D> set;
 
     // construct an empty set of points
     public PointSET() {
@@ -48,7 +53,6 @@ public class PointSET {
 
         StdDraw.setXscale(0, scale);
         StdDraw.setYscale(0, scale);
-        StdDraw.setPenRadius(0.005);
 
         for (Point2D point : this.set) {
             point.draw();
@@ -74,10 +78,10 @@ public class PointSET {
         if (p == null) {
             throw new java.lang.IllegalArgumentException();
         }
-        double distance = Double.MAX_VALUE;
+        double distance = Double.POSITIVE_INFINITY;
         Point2D nearest = null;
         for (Point2D point : this.set) {
-            double pointDistance = point.distanceTo(p);
+            double pointDistance = point.distanceSquaredTo(p);
             if (nearest == null || pointDistance < distance) {
                 nearest = point;
                 distance = pointDistance;

@@ -11,8 +11,6 @@ package algs4.week3Assignment; /************************************************
 import java.util.Comparator;
 import edu.princeton.cs.algs4.StdDraw;
 
-import static jdk.nashorn.internal.objects.Global.Infinity;
-
 public class Point implements Comparable<Point> {
 
     private final int x;     // x-coordinate of this point
@@ -63,9 +61,9 @@ public class Point implements Comparable<Point> {
     public double slopeTo(Point that) {
         if (that.x == this.x) {
             if (this.y < that.y) {
-                return +Infinity;
+                return Integer.MAX_VALUE;
             } else if (this.y > that.y) {
-                return -Infinity;
+                return Integer.MIN_VALUE;
             } else {
                 return (double) 0;
             }

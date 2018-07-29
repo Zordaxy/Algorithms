@@ -6,27 +6,17 @@ import edu.princeton.cs.algs4.StdOut;
 import java.util.Comparator;
 
 public class KdTree {
-    private final boolean VERTICAL = true;
+    private final static boolean VERTICAL = true;
     private Node root = null;
+    private Point2D nearest;
+    private Comparator<Point2D> comparator;
 
     private static class Node {
 
         private Point2D p;
-        private RectHV rect;
+        private final RectHV rect;
         private Node lb;
         private Node rt;
-
-//        public Point2D p() {
-//            return this.p;
-//        }
-
-        public Node lb() {
-            return lb;
-        }
-
-        public Node rt() {
-            return rt;
-        }
 
         public Node(Point2D p, RectHV rect) {
             this.p = p;
@@ -55,23 +45,23 @@ public class KdTree {
         this.root = insert(this.root, p, this.VERTICAL, rect);
     }
 
-    private Node insert(Node root, Point2D p, boolean orientation, RectHV rect) {
-        if (root == null) {
+    private Node insert(Node node, Point2D p, boolean orientation, RectHV rect) {
+        if (node == null) {
             rect = rect != null ? rect : new RectHV(0, 0, 1, 1);
             return new Node(p, rect);
         }
-        Comparator<Point2D> comparator = orientation ? Point2D.X_ORDER : Point2D.Y_ORDER;
-        int cmp = comparator.compare(p, root.p);
+        Comparator<Point2D> orderComparator = orientation ? Point2D.X_ORDER : Point2D.Y_ORDER;
+        int cmp = orderComparator.compare(p, node.p);
         if (cmp < 0) {
-            rect = orientation ? new RectHV(rect.xmin(), rect.ymin(), root.p.x(), rect.ymax()) : new RectHV(rect.xmin(), rect.ymin(), rect.xmax(), root.p.y());
-            root.lb = insert(root.lb, p, !orientation, rect);
+            rect = orientation ? new RectHV(rect.xmin(), rect.ymin(), node.p.x(), rect.ymax()) : new RectHV(rect.xmin(), rect.ymin(), rect.xmax(), node.p.y());
+            node.lb = insert(node.lb, p, !orientation, rect);
         } else if (cmp > 0) {
-            rect = orientation ? new RectHV(root.p.x(), rect.ymin(), rect.xmax(), rect.ymax()) : new RectHV(rect.xmin(), rect.ymin(), rect.xmax(), root.p.y());
-            root.rt = insert(root.rt, p, !orientation, rect);
+            rect = orientation ? new RectHV(node.p.x(), rect.ymin(), rect.xmax(), rect.ymax()) : new RectHV(rect.xmin(), rect.ymin(), rect.xmax(), node.p.y());
+            node.rt = insert(node.rt, p, !orientation, rect);
         } else {
-            root.p = p;
+            node.p = p;
         }
-        return root;
+        return node;
     }
 
     public boolean contains(Point2D p) {
@@ -115,12 +105,46 @@ public class KdTree {
 
         double x1 = orientation ? node.p.x() : node.rect.xmax();
         double y1 = orientation ? node.rect.ymax() : node.p.y();
-//        Point2D lb = orientation ? new Point2D(node.p.x(), node.rect.ymin()) : new Point2D(node.rect.xmin(), node.p.y());
-//        Point2D rt = orientation ? new Point2D(node.p.x(), node.rect.ymax()) : new Point2D(node.rect.xmax(), node.p.y());
         StdDraw.line(x0, y0, x1, y1);
 
         draw(node.lb, !orientation);
         draw(node.rt, !orientation);
+    }
+
+    public Point2D nearest(Point2D p) {
+        if (root == null) return null;
+        this.nearest = root.p;
+        this.comparator = p.distanceToOrder();
+        return nearest(root, p, this.VERTICAL);
+    }
+
+    private Point2D nearest(Node node, Point2D p, boolean orientation) {
+        if (node == null) return nearest;
+        checkForMin(node.p);
+
+        if (orientation ? node.p.x() > p.x() : node.p.y() > p.y()) {
+            checkForMin(nearest(node.lb, p, !orientation));
+            if (node.rt != null && node.rt.rect.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)) {
+                checkForMin(nearest(node.rt, p, !orientation));
+            }
+        } else {
+            checkForMin(nearest(node.rt, p, !orientation));
+            if (node.lb != null && node.lb.rect.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)) {
+                checkForMin(nearest(node.lb, p, !orientation));
+            }
+        }
+
+        return nearest;
+    }
+
+    private void checkForMin(Point2D a) {
+        if (this.comparator.compare(a, this.nearest) <= 0) {
+            this.nearest = a;
+        }
+    }
+
+    public Iterable<Point2D> range(RectHV rect) {
+        return null;
     }
 
     public static void main(String[] args) {
@@ -138,12 +162,9 @@ public class KdTree {
             StdOut.print("=");
         }
         StdOut.println();
-
         StdOut.println(KD.contains(new Point2D(0.75, 0.8)));
         StdOut.println(KD.contains(new Point2D(0.9, 0.9)));
-
         KD.draw();
+        StdOut.println(KD.nearest(new Point2D(0.01, 0.3)));
     }
-
-
 }
