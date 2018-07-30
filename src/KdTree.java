@@ -1,19 +1,22 @@
-import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 import java.util.Comparator;
 
 public class KdTree {
-    private final static boolean VERTICAL = true;
+    private static final boolean VERTICAL = true;
     private Node root = null;
     private Point2D nearest;
-    private Comparator<Point2D> comparator;
+    private double distance;
+    private Queue<Point2D> range;
+    private int size = 0;
 
     private static class Node {
 
-        private Point2D p;
+        private final Point2D p;
         private final RectHV rect;
         private Node lb;
         private Node rt;
@@ -25,69 +28,90 @@ public class KdTree {
     }
 
     public boolean isEmpty() {
-        return this.root == null;
+        return this.size == 0;
     }
 
     public int size() {
-        return size(root);
-    }
-
-    private int size(Node x) {
-        if (x == null) {
-            return 0;
-        } else {
-            return size(x.lb) + 1 + size(x.rt);
-        }
+        return size;
     }
 
     public void insert(Point2D p) {
-        RectHV rect = this.root != null ? this.root.rect : new RectHV(0, 0, 1, 1);
-        this.root = insert(this.root, p, this.VERTICAL, rect);
+        if (p == null) {
+            throw new java.lang.IllegalArgumentException();
+        }
+        this.root = insert(this.root, p, KdTree.VERTICAL, null);
     }
 
-    private Node insert(Node node, Point2D p, boolean orientation, RectHV rect) {
+    private Node insert(Node node, Point2D p, boolean orientation, Node parent) {
         if (node == null) {
-            rect = rect != null ? rect : new RectHV(0, 0, 1, 1);
+            if (this.size == 0) {
+                this.size++;
+                return new Node(p, new RectHV(0, 0, 1, 1));
+            }
+            RectHV rect;
+            int cmp;
+            this.size++;
+            if (orientation) {
+                cmp = Point2D.Y_ORDER.compare(p, parent.p);
+                if (cmp <= 0) {
+                    rect = new RectHV(parent.rect.xmin(), parent.rect.ymin(), parent.rect.xmax(), parent.p.y());
+                } else {
+                    rect = new RectHV(parent.rect.xmin(), parent.p.y(), parent.rect.xmax(), parent.rect.ymax());
+                }
+            } else {
+                cmp = Point2D.X_ORDER.compare(p, parent.p);
+                if (cmp <= 0) {
+                    rect = new RectHV(parent.rect.xmin(), parent.rect.ymin(), parent.p.x(), parent.rect.ymax());
+                } else {
+                    rect = new RectHV(parent.p.x(), parent.rect.ymin(), parent.rect.xmax(), parent.rect.ymax());
+                }
+            }
             return new Node(p, rect);
         }
+
         Comparator<Point2D> orderComparator = orientation ? Point2D.X_ORDER : Point2D.Y_ORDER;
         int cmp = orderComparator.compare(p, node.p);
+
         if (cmp < 0) {
-            rect = orientation ? new RectHV(rect.xmin(), rect.ymin(), node.p.x(), rect.ymax()) : new RectHV(rect.xmin(), rect.ymin(), rect.xmax(), node.p.y());
-            node.lb = insert(node.lb, p, !orientation, rect);
+            node.lb = insert(node.lb, p, !orientation, node);
         } else if (cmp > 0) {
-            rect = orientation ? new RectHV(node.p.x(), rect.ymin(), rect.xmax(), rect.ymax()) : new RectHV(rect.xmin(), rect.ymin(), rect.xmax(), node.p.y());
-            node.rt = insert(node.rt, p, !orientation, rect);
+            node.rt = insert(node.rt, p, !orientation, node);
         } else {
-            node.p = p;
+            if (orientation ? !((Double) (p.y())).equals(node.p.y()) : !((Double) (p.x())).equals(node.p.x())) {
+                node.lb = insert(node.lb, p, !orientation, node);
+            }
         }
         return node;
     }
 
     public boolean contains(Point2D p) {
-        return contains(root, p, this.VERTICAL);
+        if (p == null) {
+            throw new java.lang.IllegalArgumentException();
+        }
+        return contains(root, p, KdTree.VERTICAL);
     }
 
-    private boolean contains(Node root, Point2D p, boolean orientation) {
-        if (root == null) {
+    private boolean contains(Node node, Point2D p, boolean orientation) {
+        if (node == null) {
             return false;
         }
 
-        Comparator<Point2D> comparator = orientation ? Point2D.X_ORDER : Point2D.Y_ORDER;
-        int cmp = comparator.compare(p, root.p);
+        Comparator<Point2D> orderComparator = orientation ? Point2D.X_ORDER : Point2D.Y_ORDER;
+        int cmp = orderComparator.compare(p, node.p);
 
         if (cmp < 0) {
-            return contains(root.lb, p, !orientation);
+            return contains(node.lb, p, !orientation);
         } else if (cmp > 0) {
-            return contains(root.rt, p, !orientation);
+            return contains(node.rt, p, !orientation);
         } else {
-            return true;
+            orderComparator = !orientation ? Point2D.X_ORDER : Point2D.Y_ORDER;
+            cmp = orderComparator.compare(p, node.p);
+            return cmp == 0 || contains(node.lb, p, !orientation);
         }
     }
 
     public void draw() {
-        StdDraw.setPenRadius(0.005);
-        draw(root, this.VERTICAL);
+        draw(root, KdTree.VERTICAL);
     }
 
     private void draw(Node node, boolean orientation) {
@@ -112,39 +136,59 @@ public class KdTree {
     }
 
     public Point2D nearest(Point2D p) {
+        if (p == null) {
+            throw new java.lang.IllegalArgumentException();
+        }
         if (root == null) return null;
         this.nearest = root.p;
-        this.comparator = p.distanceToOrder();
-        return nearest(root, p, this.VERTICAL);
+        this.distance = this.nearest.distanceSquaredTo(p);
+        nearest(root, p, KdTree.VERTICAL);
+        return this.nearest;
     }
 
-    private Point2D nearest(Node node, Point2D p, boolean orientation) {
-        if (node == null) return nearest;
-        checkForMin(node.p);
+    private void nearest(Node node, Point2D p, boolean orientation) {
+        if (node == null) return;
+        double comparedDistance = node.p.distanceSquaredTo(p);
+        if (comparedDistance < this.distance) {
+            this.distance = comparedDistance;
+            this.nearest = node.p;
+        }
 
         if (orientation ? node.p.x() > p.x() : node.p.y() > p.y()) {
-            checkForMin(nearest(node.lb, p, !orientation));
-            if (node.rt != null && node.rt.rect.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)) {
-                checkForMin(nearest(node.rt, p, !orientation));
+            nearest(node.lb, p, !orientation);
+            if (node.rt != null && node.rt.rect.distanceSquaredTo(p) < this.distance) {
+                nearest(node.rt, p, !orientation);
             }
         } else {
-            checkForMin(nearest(node.rt, p, !orientation));
-            if (node.lb != null && node.lb.rect.distanceSquaredTo(p) < nearest.distanceSquaredTo(p)) {
-                checkForMin(nearest(node.lb, p, !orientation));
+            nearest(node.rt, p, !orientation);
+            if (node.lb != null && node.lb.rect.distanceSquaredTo(p) < this.distance) {
+                nearest(node.lb, p, !orientation);
             }
         }
-
-        return nearest;
-    }
-
-    private void checkForMin(Point2D a) {
-        if (this.comparator.compare(a, this.nearest) <= 0) {
-            this.nearest = a;
-        }
+        return;
     }
 
     public Iterable<Point2D> range(RectHV rect) {
-        return null;
+        range = new Queue<>();
+        if (rect == null) {
+            throw new java.lang.IllegalArgumentException();
+        }
+        if (!this.isEmpty()) {
+            range(root, rect);
+        }
+        return this.range;
+    }
+
+    private void range(Node node, RectHV rect) {
+        if (rect.contains(node.p)) {
+            range.enqueue(node.p);
+        }
+        if (node.lb != null && rect.intersects(node.lb.rect)) {
+            range(node.lb, rect);
+        }
+        if (node.rt != null && rect.intersects(node.rt.rect)) {
+            range(node.rt, rect);
+        }
     }
 
     public static void main(String[] args) {
@@ -166,5 +210,6 @@ public class KdTree {
         StdOut.println(KD.contains(new Point2D(0.9, 0.9)));
         KD.draw();
         StdOut.println(KD.nearest(new Point2D(0.01, 0.3)));
+        StdOut.println(KD.range(new RectHV(0, 0, 0.5, 0.99)).toString());
     }
 }
