@@ -1,3 +1,5 @@
+package algs4.week5Assignment;
+
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Point2D;
