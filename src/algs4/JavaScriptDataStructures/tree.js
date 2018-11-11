@@ -46,7 +46,6 @@ class Tree {
 
     dFInOrderTraverse(array = []) {
         this.left && this.left.dFInOrderTraverse(array);
-        console.log(this.value);
         array.push(this.value);
         this.right && this.right.dFInOrderTraverse(array);
         return array;
@@ -124,40 +123,27 @@ let isBalanced = root => {
     return balanced;
 };
 
-let insert = (root, value) => {
-    if (!root) return new Tree(value);
-
-    let insert = node => {
-        if (!node) return new Tree(value);
-        if (value > node.value) {
-            node.right = insert(node.right);
-        } else {
-            node.left = insert(node.left);
-        }
-        return node;
-    };
-    insert(root);
-    return root;
-};
-
-let search = (root, value) => {
-    get = node => {
-        if (!node) return null;
-        if (node.value === value) return node;
-        return value > node.value ? get(node.right) : get(node.left);
-    };
-    return get(root);
-};
-
-let isValid = function(root) {
-    function isValid(node, min, max) {
-        if (!node) return true;
-        if (min !== null && node.value <= min) return false;
-        if (max !== null && node.value >= max) return false;
-        return isValid(node.left, min, node.value) && isValid(node.right, node.value, max);
+let insert = (node, value) => {
+    if (!node) return new Tree(value);
+    if (value > node.value) {
+        node.right = insert(node.right, value);
+    } else {
+        node.left = insert(node.left, value);
     }
+    return node;
+};
 
-    return isValid(root);
+let find = (node, value) => {
+    if (!node) return null;
+    if (node.value === value) return node;
+    return value > node.value ? find(node.right, value) : find(node.left, value);
+};
+
+let isValid = function (node, min, max) {
+    if (!node) return true;
+    if (min !== null && node.value <= min) return false;
+    if (max !== null && node.value >= max) return false;
+    return isValid(node.left, min, node.value) && isValid(node.right, node.value, max);
 };
 
 let maxDepth = function(root) {
@@ -180,11 +166,11 @@ console.log("Found:", tree.get(77).value);
 deleteNode(tree, 77);
 console.log(tree.depthFirstTraverse('in'));
 
-console.log("Found:", search(tree, 66).value);
+console.log("Found:", find(tree, 66).value);
 deleteNode(tree, 66);
 console.log(tree.breadthFirstTraverse());
 
-console.log("Is Balanced:", isBalanced(tree));
+console.log("Is height-balanced:", isBalanced(tree));
 
 insert(tree, 55);
 console.log(tree.dFInOrderTraverse());
