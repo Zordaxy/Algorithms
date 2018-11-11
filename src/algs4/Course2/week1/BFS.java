@@ -2,6 +2,7 @@ package algs4.Course2.week1;
 
 
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class BFS {
