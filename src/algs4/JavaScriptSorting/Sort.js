@@ -120,19 +120,45 @@ result = MergeSortSameArray.sort(array);
 console.log("MS same array", result);
 
 
-
-
-
 class QuickSort {
-    static sort(array) {
-
-
+    // static CUTOFF = 7;
+    static sort(array, lo = 0, hi = array.length - 1) {
+        // if (hi <= lo + this.CUTOFF - 1) InsertionSort.sort(array, lo, hi);
+        if (hi <= lo) return;
+        let pivot = this._partition(array, lo, hi);
+        this.sort(array, lo, pivot - 1);
+        this.sort(array, pivot + 1, hi);
         return array;
+    }
+
+    static _partition(array, lo, hi) {
+        this._swap(array, Math.floor((lo + hi) / 2), lo);
+        let i = lo, j = hi + 1;
+
+        while (true) {
+            while (array[++i] <= array[lo]) {
+                if (i === hi) break;
+            }
+            while (array[--j] >= array[lo]) {
+                if (j === lo) break;
+            }
+
+            if (i >= j) break;
+            this._swap(array, i, j);
+        }
+        this._swap(array, lo, j);
+        return j;
+    }
+
+    static _swap(array, a, b) {
+        let temp = array[a];
+        array[a] = array[b];
+        array[b] = temp;
     }
 }
 array = initialArray.slice();
 result = QuickSort.sort(array);
-console.log("QuickSort    ", array, "Not implemented");
+console.log("QuickSort    ", array);
 
 class HeapSort {
     static sort(array) {
