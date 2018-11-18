@@ -15,25 +15,28 @@ class PriorityQ {
         let max = this.pq[1];
         this.pq[1] = this.pq[this.pq.length - 1];
         this.sink(1);
-        this.pq.length = this.pq.length -1;
+        this.pq.length = this.pq.length - 1;
         return max;
     }
 
     swim(index) {
-        while(index > 1) {
-            if (this.pq[index] < this.pq[index/2]) {
+        let j;
+        while (index > 1) {
+            j = Math.floor(index / 2);
+            if (this.pq[index] < this.pq[j]) {
                 break;
             }
-            this.exchange(index, index/2);
-            index = index/2;
+            this.exchange(index, j);
+            index = j;
         }
     }
 
     sink(index) {
-        while(index <= this.pq.length) {
-            let j = index*2;
-            if(j < this.pq.length && this.pq[j] < this.pq[j]) j++;
-            if(this.pq[j] > this.pq[index]) {
+        let j;
+        while (index <= this.pq.length) {
+            j = index * 2;
+            if (j < this.pq.length && this.pq[j] < this.pq[j + 1]) j++;
+            if (this.pq[j] > this.pq[index]) {
                 this.exchange(index, j);
             }
             index = j;
@@ -52,12 +55,12 @@ class PriorityQ {
 }
 
 let pq = new PriorityQ();
-pq.add(12);
-pq.add(48);
-pq.add(33);
-pq.add(44);
-console.log(pq.removeMax());
-pq.add(17);
-console.log(pq.removeMax());
-console.log(pq.length());
-// expect 48, 44, 3
+let testArray = [2, 8, 1, 9, 34, 59, 87, 16, 0, 44, 66, 77, 88, 14];
+for (let number of testArray) pq.add(number);
+
+let length = pq.length();
+console.log("length:", length);
+let result = [];
+for (let i = 0; i < length; i++) result.push(pq.removeMax());
+console.log("length after", length, "removes:", pq.length());
+console.log("should be ordered descending:", result);
