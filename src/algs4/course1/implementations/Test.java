@@ -2,6 +2,10 @@ package course1.implementations;
 
 import edu.princeton.cs.algs4.StdOut;
 
+/**
+ * assertEquals - to add assertion
+ * printResult - use at the end to print passed/failed numbers
+ */
 public class Test {
     private int pass;
     private int fail;
@@ -11,7 +15,7 @@ public class Test {
         fail = 0;
     }
 
-    public void assertEqual(boolean statement, boolean expected) {
+    public void assertEquals(boolean statement, boolean expected) {
         if (statement == expected) {
             pass++;
         } else {

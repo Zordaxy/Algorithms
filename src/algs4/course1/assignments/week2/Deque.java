@@ -21,7 +21,7 @@ public class Deque<Item> implements Iterable<Item> {
         return n;
     }
 
-    public void addFirst(Item item) {
+    public void addFirst(final Item item) {
         if (item == null) {
             throw new java.lang.IllegalArgumentException();
         }
@@ -35,7 +35,7 @@ public class Deque<Item> implements Iterable<Item> {
         n++;
     }
 
-    public void addLast(Item item) {
+    public void addLast(final Item item) {
         if (item == null) {
             throw new java.lang.IllegalArgumentException();
         }
@@ -57,11 +57,11 @@ public class Deque<Item> implements Iterable<Item> {
         return removeElement(last);
     }
 
-    private Item removeElement(int element) {
+    private Item removeElement(final int element) {
         if (n == 0) {
             throw new java.util.NoSuchElementException();
         }
-        Item item = array[element];
+        final Item item = array[element];
         array[element] = null;
         n--;
         if (array.length <= n / 4) {
@@ -72,16 +72,16 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     private void decreaseArray() {
-        Item[] newArray = (Item[]) new Object[n / 2];
-        int newFirst = newArray.length / 4;
+        final Item[] newArray = (Item[]) new Object[n / 2];
+        final int newFirst = newArray.length / 4;
         System.arraycopy(array, first, newArray, newFirst, n);
         first = newFirst;
         array = newArray;
     }
 
     private void increaseArray() {
-        Item[] newArray = (Item[]) new Object[(array.length + array.length / 2)];
-        int newFirst = newArray.length / 4;
+        final Item[] newArray = (Item[]) new Object[(array.length + array.length / 2)];
+        final int newFirst = newArray.length / 4;
         System.arraycopy(array, first, newArray, newFirst, n);
         first = newFirst;
         last = size() == 0 ? first : first + n - 1;
@@ -115,7 +115,7 @@ public class Deque<Item> implements Iterable<Item> {
 //        StdOut.print(Arrays.toString(array));
 //    }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
 //        Deque deque = new Deque();
 //        while (!StdIn.isEmpty()) {
 //            String s = StdIn.readString();

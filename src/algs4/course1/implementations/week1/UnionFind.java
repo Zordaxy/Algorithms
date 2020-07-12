@@ -55,15 +55,15 @@ public class UnionFind {
         uf.union(9, 4);
         uf.union(2, 1);
         
-        test.assertEqual(uf.connected(0, 7), false);
-        test.assertEqual(uf.connected(8, 9), true);
+        test.assertEquals(uf.connected(0, 7), false);
+        test.assertEquals(uf.connected(8, 9), true);
 
         uf.union(5, 0);
         uf.union(7, 2);
         uf.union(6, 1);
         uf.union(1, 0);
 
-        test.assertEqual(uf.connected(0, 7), true);
+        test.assertEquals(uf.connected(0, 7), true);
 
         test.printResult();
     }
