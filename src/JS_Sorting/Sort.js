@@ -1,4 +1,4 @@
-let initialArray = [2, 8, 1, 9, 34, 59, 87, 16, 0, 44, 66, 77, 88, 14];
+// let initialArray = [2, 8, 1, 9, 34, 59, 87, 16, 0, 44, 66, 77, 88, 14];
 
 class BubbleSort {
     static sort(array) {
@@ -15,9 +15,9 @@ class BubbleSort {
         array[b] = temp;
     }
 }
-let array = initialArray.slice();
-BubbleSort.sort(array);
-console.log("BubbleSort   ", array);
+// let array = initialArray.slice();
+// BubbleSort.sort(array);
+// console.log("BubbleSort   ", array);
 
 class SelectionSort {
     static sort(array) {
@@ -37,9 +37,9 @@ class SelectionSort {
         array[b] = temp;
     }
 }
-array = initialArray.slice();
-SelectionSort.sort(array);
-console.log("SelectionSort", array);
+// array = initialArray.slice();
+// SelectionSort.sort(array);
+// console.log("SelectionSort", array);
 
 class InsertionSort {
     static sort(array) {
@@ -55,9 +55,9 @@ class InsertionSort {
         }
     }
 }
-array = initialArray.slice();
-InsertionSort.sort(array);
-console.log("InsertionSort", array);
+// array = initialArray.slice();
+// InsertionSort.sort(array);
+// console.log("InsertionSort", array);
 
 class MergeSort {
     static sort(array) {
@@ -83,9 +83,9 @@ class MergeSort {
         return result.concat(a.slice(leftPointer)).concat(b.slice(rightPointer));
     }
 }
-array = initialArray.slice();
-result = MergeSort.sort(array);
-console.log("MergeSort    ", result);
+// array = initialArray.slice();
+// result = MergeSort.sort(array);
+// console.log("MergeSort    ", result);
 
 class MergeSortSameArray {
     static sort(array) {
@@ -115,9 +115,9 @@ class MergeSortSameArray {
         }
     }
 }
-array = initialArray.slice();
-result = MergeSortSameArray.sort(array);
-console.log("MS same array", result);
+// array = initialArray.slice();
+// result = MergeSortSameArray.sort(array);
+// console.log("MS same array", result);
 
 
 class QuickSort {
@@ -156,9 +156,9 @@ class QuickSort {
         array[b] = temp;
     }
 }
-array = initialArray.slice();
-result = QuickSort.sort(array);
-console.log("QuickSort    ", array);
+// array = initialArray.slice();
+// result = QuickSort.sort(array);
+// console.log("QuickSort    ", array);
 
 class HeapSort {
     static sort(array) {
@@ -192,6 +192,6 @@ class HeapSort {
         array[b] = temp;
     }
 }
-array = initialArray.slice();
-result = HeapSort.sort(array);
-console.log("HeapSort     ", result);
+// array = initialArray.slice();
+// result = HeapSort.sort(array);
+// console.log("HeapSort     ", result);

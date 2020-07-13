@@ -1,0 +1,40 @@
+{
+  "name": "algs4",
+  "version": "1.0.0",
+  "description": "Programming solutions and algorithm/data structure implementations for:\r # Algorithms, Part I\r #### by Princeton University\r (https://www.coursera.org/learn/algorithms-part1/home/welcome)",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zordaxy/Algorithms.git"
+  },
+  "keywords": [
+    "algorithms",
+    "javascript",
+    "data",
+    "structures"
+  ],
+  "author": "Alex Vovchuk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Zordaxy/Algorithms/issues"
+  },
+  "homepage": "https://github.com/Zordaxy/Algorithms#readme",
+  "devDependencies": {
+    "jasmine": "^3.5.0",
+    "jasmine-core": "^3.5.0",
+    "karma": "^5.1.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-jasmine": "^3.3.1",
+    "puppeteer": "^5.0.0"
+  },
+  "dependencies": {
+    "browserify": "^16.5.1",
+    "karma-browserify": "^7.0.0"
+  }
+}

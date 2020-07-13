@@ -1,5 +1,4 @@
 class ConvexHull {
-
     /**
      * Graham scan implementation to calculate Convex Hull
      */
@@ -91,3 +90,4 @@ class Point {
         return triangleArea > 0 ? 1 : -1;
     }
 }
+module.exports = ConvexHull;
