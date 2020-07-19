@@ -1,6 +1,7 @@
 package course1.implementations;
 
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 /**
  * assertEquals - to add assertion
@@ -27,5 +28,14 @@ public class Test {
     public void printResult() {
         StdOut.println("Testing complete. " + (fail == 0 ? "PASSED" : "FAILED"));
         StdOut.println("Passed: " + pass + " failed " + fail);
+    }
+
+    public static Double[] generateArray() {
+        final int N = 10;
+        final Double[] a = new Double[10];
+        for (int i = 0; i < N; i++) {
+            a[i] = StdRandom.uniform();
+        }
+        return a;
     }
 }

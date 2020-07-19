@@ -1,10 +1,13 @@
 package course1.implementations.week3;
 
-// import edu.princeton.cs.algs4.*;
 import edu.princeton.cs.algs4.Insertion;
-import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.StdRandom;
+import course1.implementations.Test;
 
+/**
+ * 1. Divide array into two halves in sort method if array has more than 1 element.
+ * 2. Recursively sort each half.
+ * 3. Merge two halves.
+ */
 public class MergeSort {
     private void merge(Comparable[] array, Comparable[] aux, int lo, int mid, int hi) {
         assert this.isSorted(array, lo, mid);
@@ -18,10 +21,10 @@ public class MergeSort {
                 aux[k] = array[index2++];
             } else if (index2 > hi) {
                 aux[k] = array[index1++];
-            } else if (less(array[index1], array[index2])) {
-                aux[k] = array[index1++];
-            } else {
+            } else if (less(array[index2], array[index1])) {
                 aux[k] = array[index2++];
+            } else {
+                aux[k] = array[index1++];
             }
         }
 
@@ -60,13 +63,15 @@ public class MergeSort {
     }
 
     public static void main(String[] args) {
-        MergeSort sorting = new MergeSort();
-        int N = 20;
-        Double[] a = new Double[N];
-        for (int i = 0; i < N; i++)
-            a[i] = StdRandom.uniform();
-        sorting.sort(a);
-        for (int i = 0; i < N; i++)
-            StdOut.println(a[i]);
+        final Test test = new Test();
+        Double[] array;
+        final QuickSort sorting = new QuickSort();
+
+        array = Test.generateArray();
+        test.assertEquals(sorting.isSorted(array), false);
+        sorting.sort(array);
+        test.assertEquals(sorting.isSorted(array), true);
+
+        test.printResult();
     }
 }

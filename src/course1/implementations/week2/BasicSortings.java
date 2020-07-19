@@ -112,15 +112,6 @@ class SortClasses {
         }
         return true;
     }
-
-    public static Double[] generateArray() {
-        final int N = 10;
-        final Double[] a = new Double[10];
-        for (int i = 0; i < N; i++) {
-            a[i] = StdRandom.uniform();
-        }
-        return a;
-    }
 }
 
 public class BasicSortings {
@@ -129,22 +120,22 @@ public class BasicSortings {
         Double[] array;
         final SortClasses sorting = new SortClasses();
 
-        array = SortClasses.generateArray();
+        array = Test.generateArray();
         test.assertEquals(sorting.isSorted(array), false);
         sorting.bubbleSort(array);
         test.assertEquals(sorting.isSorted(array), true);
 
-        array = SortClasses.generateArray();
+        array = Test.generateArray();
         test.assertEquals(sorting.isSorted(array), false);
         sorting.selectionSort(array);
         test.assertEquals(sorting.isSorted(array), true);
 
-        array = SortClasses.generateArray();
+        array = Test.generateArray();
         test.assertEquals(sorting.isSorted(array), false);
         sorting.insertionSort(array);
         test.assertEquals(sorting.isSorted(array), true);
 
-        array = SortClasses.generateArray();
+        array = Test.generateArray();
         test.assertEquals(sorting.isSorted(array), false);
         sorting.shellSort(array);
         test.assertEquals(sorting.isSorted(array), true);
