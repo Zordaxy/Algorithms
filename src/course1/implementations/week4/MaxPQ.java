@@ -7,6 +7,10 @@ import course1.implementations.Test;
  * 2. Use array indices to move through tree:
  * - Parent of node at k is at k/2
  * - Children of node at k are at 2k and 2k+1
+ * 
+ * HeapSort:
+ * - create MaxPQ with all keys sinking all keys not from the bottom level
+ * - repeatedly remove the maximum key
  */
 public class MaxPQ<T extends Comparable<T>> {
     private T[] pq;
@@ -14,6 +18,20 @@ public class MaxPQ<T extends Comparable<T>> {
 
     public MaxPQ(int capacity) {
         pq = (T[]) new Comparable[capacity + 1];
+    }
+
+    /**
+     * Generate MaxPQ from array
+     */
+    public MaxPQ(T[] a) {
+        pq = (T[]) new Comparable[a.length * 2];
+        // Separate implementation can be "in place" by applying indices and taking into the account pq[0]
+        System.arraycopy(a, 0, pq, 1, a.length);
+        N = a.length;
+
+        for (int k = N / 2; k >= 1; k--) {
+            sink(k);
+        }
     }
 
     public boolean isEmpty() {
@@ -31,6 +49,20 @@ public class MaxPQ<T extends Comparable<T>> {
         sink(1);
         pq[N + 1] = null;
         return max;
+    }
+
+    /**
+     * HeapSort
+     */
+    public T[] sort() {
+        T[] result = (T[]) new Comparable[N];
+        while (N > 1) {
+            swap(1, N--);
+            sink(1);
+        }
+        System.arraycopy(pq, 1, result, 0, result.length);
+
+        return result;
     }
 
     private void swim(int k) {
@@ -67,24 +99,29 @@ public class MaxPQ<T extends Comparable<T>> {
     }
 
     public static void main(final String[] args) {
+        // arrange
         final Test test = new Test();
-        final MaxPQ<Character> maxPQ = new MaxPQ<Character>(16);
+        Character[] unsorted = { 'H', 'B', 'Z', 'D', 'K', 'A', 'S' };
+        Character[] expected = { 'Z', 'S', 'K', 'H', 'D', 'B', 'A' };
+        MaxPQ<Character> maxPQ = new MaxPQ<Character>(16);
 
-        maxPQ.insert('H');
-        maxPQ.insert('B');
-        maxPQ.insert('Z');
-        maxPQ.insert('D');
-        maxPQ.insert('K');
-        maxPQ.insert('A');
-        maxPQ.insert('S');
+        // MaxPQ test
+        for (Character c : unsorted) {
+            maxPQ.insert(c);
+        }
 
-        test.assertEquals(maxPQ.delMax() == 'Z', true);
-        test.assertEquals(maxPQ.delMax() == 'S', true);
-        test.assertEquals(maxPQ.delMax() == 'K', true);
-        test.assertEquals(maxPQ.delMax() == 'H', true);
-        test.assertEquals(maxPQ.delMax() == 'D', true);
-        test.assertEquals(maxPQ.delMax() == 'B', true);
-        test.assertEquals(maxPQ.delMax() == 'A', true);
+        for (int i = 0; i < expected.length; i++) {
+            test.assertEquals(expected[i] == maxPQ.delMax(), true);
+        }
+
+        // HeapSort test
+        maxPQ = new MaxPQ<Character>(unsorted);
+        Comparable[] result = maxPQ.sort();
+
+        test.assertEquals(result.length == expected.length, true);
+        for (int i = 0; i < unsorted.length; i++) {
+            test.assertEquals(result[i] == expected[expected.length - 1 - i], true);
+        }
 
         test.printResult();
     }
