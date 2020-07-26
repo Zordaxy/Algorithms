@@ -1,9 +1,6 @@
 package course1.implementations.week2;
 
-import edu.princeton.cs.algs4.StdIn;
-import edu.princeton.cs.algs4.StdOut;
-
-class StackOfStrings {
+public class StackOfStrings {
     // private Node first = null;
     private String[] array;
     private int N = 0;
@@ -48,52 +45,4 @@ class StackOfStrings {
     // String value;
     // Node next;
     // }
-}
-
-class QueueOfStrings {
-    private Node first = null;
-    private Node last = null;
-
-    QueueOfStrings() {}
-
-    void enqueue(String item) {
-        Node oldlast = last;
-        last = new Node();
-        last.value = item;
-        last.next = null;
-        if (isEmpty()) {
-            first = last;
-        } else {
-            oldlast.next = last;
-        }
-    }
-
-    String dequeue() {
-        String item = first.value;
-        first = first.next;
-        return item;
-    }
-
-    boolean isEmpty() {
-        return first == null;
-    }
-
-    private class Node {
-        String value;
-        Node next;
-    }
-}
-
-public class StacksQueues {
-    public static void main(String[] args) {
-        QueueOfStrings stack = new QueueOfStrings();
-        while (!StdIn.isEmpty()) {
-            String s = StdIn.readString();
-            if (s.equals("-"))
-                StdOut.print(stack.dequeue());
-            else
-                stack.enqueue(s);
-            StdOut.print(stack.isEmpty());
-        }
-    }
 }

@@ -1,7 +1,6 @@
 package course1.implementations.week3;
 
 import edu.princeton.cs.algs4.StdRandom;
-import course1.implementations.Test;
 
 /**
  * 1. Perform partitioning
@@ -58,7 +57,7 @@ public class QuickSort {
     }
 
     public void sort(final Comparable[] a) {
-        StdRandom.shuffle(a);
+        shuffle(a);
         this.sort(a, 0, a.length - 1);
     }
 
@@ -72,25 +71,11 @@ public class QuickSort {
         array[b] = item;
     }
 
-    public boolean isSorted(Comparable[] array) {
-        for (int i = 1; i < array.length; i++) {
-            if (this.less(array[i], array[i - 1])) {
-                return false;
-            }
+    private void shuffle(Comparable[] array) {
+        int n = array.length;
+        for (int i = 0; i < n; i++) {
+            int r = StdRandom.uniform(i + 1);
+            this.swap(array, i, r);
         }
-        return true;
-    }
-
-    public static void main(final String[] args) {
-        final Test test = new Test();
-        Double[] array;
-        final QuickSort sorting = new QuickSort();
-
-        array = Test.generateArray();
-        test.assertEquals(sorting.isSorted(array), false);
-        sorting.sort(array);
-        test.assertEquals(sorting.isSorted(array), true);
-
-        test.printResult();
     }
 }

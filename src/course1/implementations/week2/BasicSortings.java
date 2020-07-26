@@ -1,9 +1,6 @@
 package course1.implementations.week2;
 
-import course1.implementations.Test;
-import edu.princeton.cs.algs4.StdRandom;
-
-class SortClasses {
+class BasicSortings {
     public void bubbleSort(final Comparable[] array) {
         int n = array.length;
         boolean swapped = true;
@@ -94,52 +91,5 @@ class SortClasses {
 
     private boolean less(final Comparable a, final Comparable b) {
         return a.compareTo(b) < 0;
-    }
-
-    private void shuffle(Comparable[] array) {
-        int n = array.length;
-        for (int i = 0; i < n; i++) {
-            int r = StdRandom.uniform(i + 1);
-            this.swap(array, i, r);
-        }
-    }
-
-    public boolean isSorted(Comparable[] array) {
-        for (int i = 1; i < array.length; i++) {
-            if (this.less(array[i], array[i - 1])) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
-public class BasicSortings {
-    public static void main(final String[] args) {
-        Test test = new Test();
-        Double[] array;
-        final SortClasses sorting = new SortClasses();
-
-        array = Test.generateArray();
-        test.assertEquals(sorting.isSorted(array), false);
-        sorting.bubbleSort(array);
-        test.assertEquals(sorting.isSorted(array), true);
-
-        array = Test.generateArray();
-        test.assertEquals(sorting.isSorted(array), false);
-        sorting.selectionSort(array);
-        test.assertEquals(sorting.isSorted(array), true);
-
-        array = Test.generateArray();
-        test.assertEquals(sorting.isSorted(array), false);
-        sorting.insertionSort(array);
-        test.assertEquals(sorting.isSorted(array), true);
-
-        array = Test.generateArray();
-        test.assertEquals(sorting.isSorted(array), false);
-        sorting.shellSort(array);
-        test.assertEquals(sorting.isSorted(array), true);
-
-        test.printResult();
     }
 }

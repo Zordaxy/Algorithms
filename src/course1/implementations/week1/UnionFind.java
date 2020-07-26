@@ -1,12 +1,10 @@
 package course1.implementations.week1;
 
-import course1.implementations.Test;
-
-class _UnionFind {
+class UnionFind {
     private int[] id;
     private int[] size;
 
-    public _UnionFind(int N) {
+    public UnionFind(int N) {
         id = new int[N];
         size = new int[N];
         for (int i = 0; i < N; i++) {
@@ -41,30 +39,5 @@ class _UnionFind {
             i = id[i];
         }
         return i;
-    }
-}
-
-public class UnionFind {
-    public static void main(String[] args) {
-        _UnionFind uf = new _UnionFind(20);
-        Test test = new Test();
-
-        uf.union(4, 3);
-        uf.union(3, 8);
-        uf.union(6, 5);
-        uf.union(9, 4);
-        uf.union(2, 1);
-        
-        test.assertEquals(uf.connected(0, 7), false);
-        test.assertEquals(uf.connected(8, 9), true);
-
-        uf.union(5, 0);
-        uf.union(7, 2);
-        uf.union(6, 1);
-        uf.union(1, 0);
-
-        test.assertEquals(uf.connected(0, 7), true);
-
-        test.printResult();
     }
 }
