@@ -1,7 +1,6 @@
 package course2.implementations.week1;
 
 import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Stack;
 
 public class BFS {

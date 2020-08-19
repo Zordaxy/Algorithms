@@ -1,16 +1,12 @@
 package course1.implementations.week4;
 
-import course1.implementations.Test;
-
 /**
- * 1. Largest key is a[1], which is root of binary tree
- * 2. Use array indices to move through tree:
- * - Parent of node at k is at k/2
- * - Children of node at k are at 2k and 2k+1
+ * 1. Largest key is a[1], which is root of binary tree 2. Use array indices to
+ * move through tree: - Parent of node at k is at k/2 - Children of node at k
+ * are at 2k and 2k+1
  * 
- * HeapSort:
- * - create MaxPQ with all keys sinking all keys not from the bottom level
- * - repeatedly remove the maximum key
+ * HeapSort: - create MaxPQ with all keys sinking all keys not from the bottom
+ * level - repeatedly remove the maximum key
  */
 public class MaxPQ<T extends Comparable<T>> {
     private T[] pq;
@@ -25,7 +21,8 @@ public class MaxPQ<T extends Comparable<T>> {
      */
     public MaxPQ(T[] a) {
         pq = (T[]) new Comparable[a.length * 2];
-        // Separate implementation can be "in place" by applying indices and taking into the account pq[0]
+        // Separate implementation can be "in place" by applying indices and taking into
+        // the account pq[0]
         System.arraycopy(a, 0, pq, 1, a.length);
         N = a.length;
 
@@ -96,33 +93,5 @@ public class MaxPQ<T extends Comparable<T>> {
         T temp = pq[a];
         pq[a] = pq[b];
         pq[b] = temp;
-    }
-
-    public static void main(final String[] args) {
-        // arrange
-        final Test test = new Test();
-        Character[] unsorted = { 'H', 'B', 'Z', 'D', 'K', 'A', 'S' };
-        Character[] expected = { 'Z', 'S', 'K', 'H', 'D', 'B', 'A' };
-        MaxPQ<Character> maxPQ = new MaxPQ<Character>(16);
-
-        // MaxPQ test
-        for (Character c : unsorted) {
-            maxPQ.insert(c);
-        }
-
-        for (int i = 0; i < expected.length; i++) {
-            test.assertEquals(expected[i] == maxPQ.delMax(), true);
-        }
-
-        // HeapSort test
-        maxPQ = new MaxPQ<Character>(unsorted);
-        Comparable[] result = maxPQ.sort();
-
-        test.assertEquals(result.length == expected.length, true);
-        for (int i = 0; i < unsorted.length; i++) {
-            test.assertEquals(result[i] == expected[expected.length - 1 - i], true);
-        }
-
-        test.printResult();
     }
 }
