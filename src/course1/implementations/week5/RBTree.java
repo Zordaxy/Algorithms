@@ -1,8 +1,11 @@
-package course1.implementations.week4;
+package course1.implementations.week5;
 
 import edu.princeton.cs.algs4.Queue;
 
-public class BST<Key extends Comparable<Key>, Value> {
+public class RBTree<Key extends Comparable<Key>, Value> {
+    private static final boolean RED = true;
+    private static final boolean BLACK = false;
+
     private Node root;
 
     private class Node {
@@ -11,12 +14,48 @@ public class BST<Key extends Comparable<Key>, Value> {
         private Node left;
         private Node right;
         private int count;
+        private boolean color;
 
-        public Node(Key key, Value val) {
+        public Node(Key key, Value val, boolean color) {
             this.key = key;
             this.val = val;
             this.count= 1;
+            this.color = color;
         }
+    }
+
+    private boolean isRed(Node x) {
+        return x == null ? false : x.color;
+    }
+
+    private Node rotateLeft(Node h) {
+        Node x = h.right;
+        h.right = x.left;
+        x.left = h;
+        x.color = h.color;
+        h.color = RED;
+        x.count = h.count;
+        h.count = size(h.left) + size(h.right) + 1;
+
+        return x;
+    }
+
+    private Node rotateRight(Node h) {
+        Node x = h.left;
+        h.left = x.right;
+        x.right = h;
+        x.color = h.color;
+        h.color = RED;
+        x.count = h.count;
+        h.count = size(h.left) + size(h.right) + 1;
+
+        return x;
+    }
+
+    private void flipColors(Node h) {
+        h.color = RED;
+        h.left.color = BLACK;
+        h.right.color = BLACK;
     }
 
     public int size() {
@@ -33,7 +72,7 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     private Node put(Node x, Key key, Value value) {
         if (x == null) {
-            return new Node(key, value);
+            return new Node(key, value, RED);
         }
 
         int comp = key.compareTo(x.key);
@@ -45,6 +84,17 @@ public class BST<Key extends Comparable<Key>, Value> {
         } else {
             x.val = value;
         }
+        
+        if (isRed(x.right) && !isRed(x.left)) {
+            x = rotateLeft(x);
+        }
+        if (isRed(x.left) && isRed(x.left.left)) {
+            x = rotateRight(x);
+        }
+        if (isRed(x.left) && isRed(x.right)) {
+            flipColors(x);
+        }
+
         x.count = 1 + size(x.left) + size(x.right);
 
         return x;
@@ -66,7 +116,7 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
     public void delete(Key key) {
-        
+
     }
 
     public Node floor(Key key) {
@@ -131,7 +181,7 @@ public class BST<Key extends Comparable<Key>, Value> {
     public boolean isBST() {
         return isBST(root, null, null);
     }
-
+    
     private boolean isBST(Node x, Key min, Key max) {
         if (x == null)
             return true;

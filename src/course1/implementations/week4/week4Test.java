@@ -16,6 +16,7 @@ public class week4Test {
         }
 
         assertEquals(10, symbolTable.size());
+        assertTrue(symbolTable.isBST());
 
         int val = symbolTable.get('H');
         assertEquals(2, val);
@@ -23,12 +24,6 @@ public class week4Test {
         Queue<Character> keys = (Queue) symbolTable.keys();
         int size = keys.size();
         assertEquals(10, size);
-
-        Character[] keysArray = new Character[size];
-        for (int i = 0; i < size; i++) {
-            keysArray[i] = keys.dequeue();
-        }
-        assertTrue(isSorted(keysArray));
     }
 
     @Test
@@ -61,14 +56,5 @@ public class week4Test {
         for (int i = 0; i < unsorted.length; i++) {
             assertEquals(expected[expected.length - 1 - i], result[i]);
         }
-    }
-
-    private boolean isSorted(Comparable[] array) {
-        for (int i = 1; i < array.length; i++) {
-            if (array[i].compareTo(array[i - 1]) < 0) {
-                return false;
-            }
-        }
-        return true;
     }
 }
