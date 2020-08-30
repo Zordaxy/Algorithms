@@ -3,6 +3,10 @@ package course2.implementations.week1;
 import java.util.LinkedList;
 import java.util.Stack;
 
+/**
+ * 1. Remove vertex v from queue
+ * 2. Add to queue all unmarked vertices adjacent to v and mark them
+ */
 public class BFS {
     private boolean[] marked;
     private int[] edgeTo;
@@ -17,7 +21,7 @@ public class BFS {
     }
 
     private void bfs(Graph G, int s) {
-        LinkedList<Integer> q = new LinkedList<>();
+        LinkedList<Integer> q = new LinkedList<>(); // used as a queue
         q.add(s);
         marked[s] = true;
         distTo[s] = 0;

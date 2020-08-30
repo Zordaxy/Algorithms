@@ -2,6 +2,9 @@ package course2.implementations.week1;
 
 import java.util.*;
 
+/**
+ * Adjacensy list representation: list of vertices with lists of adjacent vertices in each
+ */
 public class Graph {
     private int V;
     private int E;

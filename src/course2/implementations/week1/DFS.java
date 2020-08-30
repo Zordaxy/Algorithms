@@ -2,6 +2,12 @@ package course2.implementations.week1;
 
 import java.util.Stack;
 
+/**
+ * 1. Mark v as visited
+ * 2. Recursively visit all unmarked vertices w adjacent to v.
+ * 
+ * Can be implemented by putting unvisited vertices on a stack
+ */
 public class DFS {
     private boolean[] marked;
     private int[] edgeTo;
@@ -38,16 +44,6 @@ public class DFS {
         }
         path.push(s);
         return path;
-    }
-
-    public static void main(String[] args) {
-        Graph G = Graph.getDafaultGraph();
-        int s = 5;
-
-        DFS paths = new DFS(G, s);
-        for (int v = 0; v < G.V(); v++)
-            if (paths.hasPathTo(v))
-                System.out.println(paths.pathTo(v));
     }
 }
 
