@@ -2,6 +2,7 @@ package course2.implementations.week1;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import java.util.Stack;
 
 import org.junit.Test;
 
@@ -42,5 +43,23 @@ public class week1Test {
         }
 
         assertEquals(expected, result);
+    }
+
+    @Test
+    public void DepthFirstOrderTest() {
+        Digraph g = new Digraph(6);
+        g.addEdge(5, 2);
+        g.addEdge(5, 0);
+        g.addEdge(4, 0);
+        g.addEdge(4, 1);
+        g.addEdge(2, 3);
+        g.addEdge(3, 1);
+
+        DepthFirstOrder util = new DepthFirstOrder(g);
+        Stack<Integer> postOrder = (Stack<Integer>) util.reversePost();
+
+        String expected = "[3, 2, 4, 4, 5, 5]";
+
+        assertEquals(expected, postOrder.toString());
     }
 }

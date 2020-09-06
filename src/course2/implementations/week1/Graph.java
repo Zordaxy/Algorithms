@@ -36,7 +36,6 @@ public class Graph {
         return E;
     }
 
-
     public static void main(String[] args) {
         // Scanner reader = new Scanner(System.in);
         Graph g = getDafaultGraph();
