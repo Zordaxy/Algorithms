@@ -31,8 +31,6 @@ public class PrimMST {
         }
     }
 
-
-
     private void visit(WeightedGraph G, int v) {
         marked[v] = true;
         G.adj(v).forEach(e -> {

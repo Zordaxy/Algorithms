@@ -22,6 +22,15 @@ public class Week2Test {
         assertEquals(7, index);
     }
 
+    @Test
+    public void SPTTest() {
+        WeightedDiGraph G = generateWeightedDiGraph();
+
+        DijkstraSP spt = new DijkstraSP(G, 0);
+        
+        assertEquals(8.0, spt.distTo(7), 0.1);
+    }
+
     private WeightedGraph generateWeightedGraph() {
         WeightedGraph G = new WeightedGraph(8);
         G.addEdge(new Edge(4, 5, 0.35));
@@ -40,6 +49,27 @@ public class Week2Test {
         G.addEdge(new Edge(3, 6, 0.52));
         G.addEdge(new Edge(6, 0, 0.58));
         G.addEdge(new Edge(6, 4, 0.93));
+        return G;
+    }
+
+    private WeightedDiGraph generateWeightedDiGraph() {
+        WeightedDiGraph G = new WeightedDiGraph(8);
+        G.addEdge(new DirectedEdge(0, 1, 5.0));
+        G.addEdge(new DirectedEdge(0, 1, 9.0));
+        G.addEdge(new DirectedEdge(0, 7, 8.0));
+        G.addEdge(new DirectedEdge(1, 2, 12.0));
+        G.addEdge(new DirectedEdge(1, 3, 15.0));
+        G.addEdge(new DirectedEdge(1, 7, 4.0));
+        G.addEdge(new DirectedEdge(2, 3, 3.0));
+        G.addEdge(new DirectedEdge(2, 6, 11.0));
+        G.addEdge(new DirectedEdge(3, 6, 9.0));
+        G.addEdge(new DirectedEdge(4, 5, 4.0));
+        G.addEdge(new DirectedEdge(4, 6, 20.0));
+        G.addEdge(new DirectedEdge(4, 7, 5.0));
+        G.addEdge(new DirectedEdge(5, 2, 1.0));
+        G.addEdge(new DirectedEdge(5, 6, 13.0));
+        G.addEdge(new DirectedEdge(7, 5, 6.0));
+        G.addEdge(new DirectedEdge(7, 2, 7.0));
         return G;
     }
 }
