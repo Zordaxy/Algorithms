@@ -1,4 +1,4 @@
-package course2.implementations.week4;
+package course2.implementations.week3;
 
 /**
  * 1. Count numbers of appearence for eact char

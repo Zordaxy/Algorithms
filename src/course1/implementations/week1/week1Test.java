@@ -8,6 +8,7 @@ import org.junit.Test;
 public class week1Test {
     @Test
     public void TestUnionFind() {
+        // clean the Java language server workspace
         UnionFind uf = new UnionFind(20);
 
         uf.union(4, 3);
