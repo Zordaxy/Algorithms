@@ -1,9 +1,7 @@
 package course2.implementations.week4;
 
 import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
-
 import org.junit.Test;
 
 public class Week4Test {
@@ -50,7 +48,6 @@ public class Week4Test {
         ArrayList<Integer> result = kmp.KMPSearch(pat, txt);
 
         assertEquals(1, result.size());
-
         assertEquals((Integer) txt.indexOf(pat), result.get(0));
     }
 }
