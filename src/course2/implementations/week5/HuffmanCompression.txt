@@ -1,0 +1,14 @@
+Idea: use different number of bits to encode different chars with the prefix-free code.
+Prefix-free code representation:
+・A binary trie with:
+   - Chars in leaves.
+   - Codeword is path from root to leaf.
+   - all left nodes are 0.
+   - all right nodes are 1.
+
+Huffman algorithm (find best prefix-free code):
+・Count frequency freq[i] for each char i in input.
+・Start with one node corresponding to each char i (with weight freq[i]).
+・Repeat until single trie formed:
+  - select two tries with min weight freq[i] and freq[j]
+  - merge into single trie with weight freq[i] + freq[j]

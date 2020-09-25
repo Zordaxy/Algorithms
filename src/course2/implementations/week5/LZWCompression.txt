@@ -1,0 +1,17 @@
+LZW compression.
+
+Compression:
+1. Create ST associating W-bit codewords with string keys.
+2. Initialize ST with codewords for single-char key.
+3. Find longest string s in ST that is a prefix of unscanned part of the input.
+4. Write the W-bit codeword associated with s.
+5. Add s + c to ST, where c is newt char in the input
+Code table: trie.
+
+LZW expansion:
+1. Create ST associating string values with W-bit keys.
+2. Initialize ST to contain single-char values.
+3. Read a W-bit key.
+4. Find associated string value in ST and write it out.
+5. Update ST.
+Code table: array of size 2^W
