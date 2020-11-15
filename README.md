@@ -1,13 +1,17 @@
-Programming solutions and algorithm/data structure implementations for:
-# Algorithms, Part I
-#### by Princeton University
-(https://www.coursera.org/learn/algorithms-part1/home/welcome)
+## Algorithms/Data Structure implementations
 
-and 
+Programming solutions and algorithm/data structure implementations for [Algorithms, Part I](https://www.coursera.org/learn/algorithms-part1) and [Algorithms, Part II](https://www.coursera.org/learn/algorithms-part2) [Coursera](https://www.coursera.org/) courses by Princeton University.
 
-Algorithms/data structure implementations for:
-# Algorithms, Part II
-#### by Princeton University
-(https://www.coursera.org/learn/algorithms-part2/home/welcome)
+Another section contains javascript basic implementations for Data structures and algorithms.
 
-###### Done with personal educational goal.
+#### Table of content
+Algorithms, Part I
+- [assignments](src/course1/assignments)
+- [implementations](src/course1/implementations)
+
+Algorithms, Part II
+- [implementations](src/course2/implementations)
+
+Javascript implementations
+- [data structures](src/JsImplementations/Structures)
+- [algorithms](src/JsImplementations/Algorithms)
