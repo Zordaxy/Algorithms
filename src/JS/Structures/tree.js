@@ -74,38 +74,37 @@ class Tree {
 }
 
 let deleteNode = (root, key) => {
-    let deleteNode = node => {
+    if (!root) return null;
+    
+    let findSuccessor = node => {
+        node = node.right;
+        while(node.left) node = node.left;
+        return node;
+    }
+    
+    let delInSubTree = (node, val) => {
         if (!node) return null;
-        if (key > node.value) {
-            node.right = deleteNode(node.right);
-        } else if (key < node.value) {
-            node.left = deleteNode(node.left);
+        if (node.val === val) {
+            // case with single child
+            // case with no children covered
+            // case with 2 shildren
+            if (!node.left) return node.right;
+            if (!node.right) return node.left;
+            
+            successor = findSuccessor(node);
+            successor.right = delInSubTree(node.right, successor.val);
+            successor.left = node.left;
+            
+            return successor;
+        } else if (node.val > key) {
+            node.left = delInSubTree(node.left, val);
         } else {
-            if (node.left === null) return node.right;
-            if (node.right === null) return node.left;
-
-            let temp = node;
-            node = min(temp.right);
-            node.right = deleteMin(temp.right);
-            node.left = temp.left;
+            node.right = delInSubTree(node.right, val);
         }
         return node;
-    };
-
-    let min = node => {
-        if (node.left !== null) return min(node.left);
-        return node;
-    };
-
-    let deleteMin = node => {
-        if (!node) return null;
-        if (node.left === null) return node.right;
-        node.left = deleteMin(node.left);
-        return node;
-    };
-
-    root = deleteNode(root);
-    return root;
+    }
+    
+    return delInSubTree(root, key);
 };
 
 let isBalanced = root => {
@@ -123,7 +122,7 @@ let isBalanced = root => {
     return balanced;
 };
 
-let insert = (node, value) => {
+let insertRecursive = (node, value) => {
     if (!node) return new Tree(value);
     if (value > node.value) {
         node.right = insert(node.right, value);
@@ -132,6 +131,29 @@ let insert = (node, value) => {
     }
     return node;
 };
+
+let insertIterative = (root, val) => {
+    if (!root) return new TreeNode(val);
+    let node = root;
+    while (node) {
+        if (node.val > val) {
+            if (node.left) {
+                node = node.left;
+            } else {
+                node.left = new TreeNode(val);
+                break;
+            }
+        } else {
+            if (node.right) {
+                node = node.right;
+            } else {
+                node.right = new TreeNode(val);
+                break;
+            }
+        }
+    }
+    return root;
+}
 
 let find = (node, value) => {
     if (!node) return null;
