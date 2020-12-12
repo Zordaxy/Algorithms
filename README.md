@@ -13,5 +13,5 @@ Algorithms, Part II
 - [implementations](src/course2/implementations)
 
 Javascript implementations
-- [data structures](src/JsImplementations/Structures)
-- [algorithms](src/JsImplementations/Algorithms)
+- [data structures](src/JS/Structures)
+- [algorithms](src/JS/Algorithms)
