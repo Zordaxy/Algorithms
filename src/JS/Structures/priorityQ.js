@@ -1,4 +1,5 @@
 class PriorityQ {
+    //  max q
     constructor() {
         this.pq = [null];
     }
@@ -9,9 +10,7 @@ class PriorityQ {
     }
 
     removeMax() {
-        if (!this.length()) {
-            return null;
-        }
+        if (!this.length() === 1) return null;
         let max = this.pq[1];
         this.pq[1] = this.pq[this.pq.length - 1];
         this.sink(1);
@@ -20,33 +19,31 @@ class PriorityQ {
     }
 
     swim(index) {
-        let j;
         while (index > 1) {
-            j = Math.floor(index / 2);
-            if (this.pq[index] < this.pq[j]) {
-                break;
-            }
+            let j = Math.floor(index / 2);
+            if (this.pq[index] < this.pq[j]) break;
+
             this.exchange(index, j);
             index = j;
         }
     }
 
     sink(index) {
-        let j;
-        while (index <= this.pq.length) {
+        while (index * 2 <= this.pq.length) {
             j = index * 2;
             if (j < this.pq.length && this.pq[j] < this.pq[j + 1]) j++;
-            if (this.pq[j] > this.pq[index]) {
-                this.exchange(index, j);
-            }
+            if (this.pq[index] >= this.pq[j]) break;
+
+            this.exchange(index, j);
             index = j;
         }
     }
 
     exchange(a, b) {
-        let temp = this.pq[a];
-        this.pq[a] = this.pq[b];
-        this.pq[b] = temp;
+        [this.pq[a], this.pq[b]] = [this.pq[b], this.pq[a]];
+        // let temp = this.pq[a];
+        // this.pq[a] = this.pq[b];
+        // this.pq[b] = temp;
     }
 
     length() {

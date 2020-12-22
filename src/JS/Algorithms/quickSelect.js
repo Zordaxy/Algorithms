@@ -18,7 +18,8 @@ function search(arr, start, end, ind) {
     }
 }
 
-function getPivot(arr, start, end) {
+// Not practical
+function getPivot_obsolete(arr, start, end) {
     let pivot = arr[end];
     let i = start;
     let j = end - 1;
@@ -36,6 +37,16 @@ function getPivot(arr, start, end) {
     swap(arr, end, i);
     return i;
 }
+
+let getPivot = (lo, hi) => {
+    let pivot = nums[hi];
+    let ind = lo;
+    for (let i = lo; i < hi; i++) {
+        if (nums[i] < pivot) swap(i, ind++);
+    }
+    swap(hi, ind);
+    return ind;
+};
 
 function swap(arr, i, j) {
     [arr[i], arr[j]] = [arr[j], arr[i]];
