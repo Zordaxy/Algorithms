@@ -51,6 +51,7 @@ class PriorityQ {
     }
 }
 
+
 let pq = new PriorityQ();
 let testArray = [2, 8, 1, 9, 34, 59, 87, 16, 0, 44, 66, 77, 88, 14];
 for (let number of testArray) pq.add(number);
