@@ -1,45 +1,46 @@
-function topoOrder(adj) {
-    let visited = new Set();
-    let dfsPost = [];
-    let nodes = [...adj.keys()];
+var findOrder = function (numCourses, prerequisites) {
+    let adj = new Map();
 
-    // topological sort
-    // reversed PostOrder traversal.
-    let topoOrder = el => {
-        visited.add(el);
-        adj.get(el).forEach(child => {
-            if (!visited.has(child)) topoOrder(child);
-        });
-        dfsPost.push(el);
-    }
+    // generate adj list
+    for (let i = 0; i < prerequisites.length; i++) {
+        let [parent, child] = prerequisites[i];
 
-    for (let i = 0; i < nodes.length; i++) {
-        if (!visited.has(nodes[i])) topoOrder(nodes[i]);
-    }
-    return dfsPost.reverse().join('');
-}
-
-function checkForCycles(adj) {
-    let visited = new Set();
-
-    let dfs = value => {
-        if (visited.has(value)) return true;
-        visited.add(value);
-
-        let children = adj.get(value);
-        for (let i = 0; i < children.length; i++) {
-            let result = dfs(children[i]);
-            if (result) return true;
+        if (adj.has(parent)) {
+            adj.get(parent).push(child);
+        } else {
+            adj.set(parent, [child])
         }
-        // Clean up after traversal!
-        visited.delete(value);
+    }
+
+    let topoOrder = [];
+    let visited = new Set();
+    let tracked = new Set();
+
+    let dfs = node => {
+        visited.add(node);
+        // onnce we checked for circle a set of nodes - we don't have to do that again
+        tracked.add(node);
+        let children = adj.get(node);
+        if (children) {
+            for (let i = 0; i < children.length; i++) {
+                if (tracked.has(children[i])) return true;
+                if (!visited.has(children[i])) {
+                    let isCircle = dfs(children[i]);
+                    if (isCircle) return true;
+                }
+            }
+        }
+
+        tracked.delete(node);
+        topoOrder.push(node);
         return false;
     }
 
-    let nodes = [...adj.keys()];
-    for (let i = 0; i < nodes.length; i++) {
-        let result = dfs(nodes[i]);
-        if (result) return true;
+    for (let i = 0; i < numCourses; i++) {
+        // dfs(i) returns true in case of existing circle
+        if (!visited.has(i) && dfs(i)) return [];
     }
-    return false;
-}
+
+    // No reverse as contition is about prerequisites, not dependencies
+    return topoOrder;
+};
